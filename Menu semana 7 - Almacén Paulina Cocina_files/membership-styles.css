@@ -1,0 +1,32 @@
+#buttonet-container {
+    margin-bottom: 20px;
+		font-size: 16px;
+	line-height: 1.2em;
+}
+
+#buttonet {
+    text-align: left;
+	
+}
+
+#buttonet a {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #FCBF49;
+    color: #000;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+#buttonet a:hover {
+    background-color: #dddddd;
+}
+
+@media only screen and (max-width: 600px) {
+ #buttonet {
+    text-align: center;
+	
+}
+
+}
