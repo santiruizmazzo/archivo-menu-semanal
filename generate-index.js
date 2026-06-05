@@ -67,7 +67,6 @@ const menuCards = files
       <a href="menus/${file}" class="card${isLatest ? " card--latest" : ""}">
         <div class="card-header">
           ${isLatest ? '<span class="badge">Último</span>' : ""}
-          ${label ? `<span class="label">${label}</span>` : ""}
         </div>
         <div class="card-title">${title}</div>
         <div class="card-arrow">→</div>
