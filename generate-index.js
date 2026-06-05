@@ -61,7 +61,7 @@ function getISOWeek(date) {
 const menuCards = files
   .map((file, i) => {
     const title = formatTitle(file);
-    const label = weekLabel(file);
+    // const label = weekLabel(file);
     const isLatest = i === 0;
     return `
       <a href="menus/${file}" class="card${isLatest ? " card--latest" : ""}">
@@ -86,7 +86,7 @@ const html = `<!DOCTYPE html>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mis Menús Semanales</title>
+  <title>Archivo de menús semanales</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -288,9 +288,8 @@ const html = `<!DOCTYPE html>
 </head>
 <body>
   <header>
-    <p class="eyebrow">Archivo personal</p>
-    <h1>Mis Menús<br>Semanales</h1>
-    <p class="subtitle">Menús guardados de mi suscripción semanal.</p>
+    <h1>Archivo de menús semanales</h1>
+    <p class="subtitle">Menús semanales guardados del servicio de Menú Semanal de Paulina Cocina.</p>
     ${
       files.length > 0
         ? `<span class="count">${files.length} menú${files.length !== 1 ? "s" : ""} guardado${files.length !== 1 ? "s" : ""}</span>`
