@@ -188,12 +188,37 @@ def image_url(filename):
     return f"{CDN}/{filename}"
 
 
+def inline_page_css(raw, files_dir):
+    """Inline the page-specific Elementor CSS (post-XXXXX.css).
+    Returns (raw_with_css_inlined, post_id) where post_id is the page's post ID.
+    """
+    m = re.search(r'class="elementor elementor-(\d+)"', raw)
+    if not m:
+        return raw, None
+    post_id = m.group(1)
+    css_path = Path(files_dir) / f"post-{post_id}.css"
+    if not css_path.exists():
+        print(f"  ⚠ No se encontró {css_path} para inline", file=sys.stderr)
+        return raw, post_id
+    css_content = css_path.read_text("utf-8")
+    raw = re.sub(
+        rf'<link[^>]*href="[^"]*post-{post_id}\.css[^"]*"[^>]*>',
+        f'<style id="elementor-post-{post_id}-css">{css_content}</style>',
+        raw,
+    )
+    print(f"  ✅ post-{post_id}.css inlinado ({len(css_content)} chars)")
+    return raw, post_id
+
+
 def convert_file(html_path):
     html_path = Path(html_path)
     raw = html_path.read_text("utf-8")
 
     # Determine the _files directory name from the HTML path
     files_dir = html_path.stem + "_files"
+
+    # Inline page-specific Elementor CSS before general replacement
+    raw, post_id = inline_page_css(raw, files_dir)
 
     # Escape special regex chars in the directory name
     escaped_dir = re.escape(files_dir)
