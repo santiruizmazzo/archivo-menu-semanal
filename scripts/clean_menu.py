@@ -8,9 +8,13 @@ from bs4 import BeautifulSoup, Tag
 FAREWELL_PATTERNS = [
     "Espero haberte salvado",
     "Si llegaste hasta aca sin caer",
+    "Si llegaste hasta acá sin caer",
     "Bueno, mision cumplida",
+    "Bueno, misión cumplida",
     "Nos reencontramos en la proxima",
+    "Nos reencontramos en la próxima",
     "Nos vemos en el proximo menu",
+    "Nos vemos en el próximo menú",
 ]
 
 WHATSAPP_PATTERNS = [
@@ -59,6 +63,28 @@ def main():
 
     remove_sections_by_text(soup, WHATSAPP_PATTERNS)
     remove_sections_by_text(soup, FAREWELL_PATTERNS)
+
+    # Fix sticky nav bars: remove JS-added classes/inline styles, remove spacer duplicates
+    STICKY_DATA_IDS = {"740ebe60"}
+    for data_id in STICKY_DATA_IDS:
+        elements = soup.find_all("div", attrs={"data-id": data_id})
+        for i, el in enumerate(elements):
+            if not isinstance(el, Tag):
+                continue
+            if i == 0:
+                keep_classes = [c for c in (el.get("class") or [])
+                                if not c.startswith("elementor-sticky") and c != "elementor-section--handles-inside"]
+                el["class"] = keep_classes
+                if el.get("style"):
+                    style = el["style"]
+                    el["style"] = "; ".join(
+                        s for s in style.split(";")
+                        if not any(k in s.strip() for k in ["position: fixed", "top:", "width:", "margin-top:", "margin-bottom:"])
+                    ).strip("; ")
+                    if not el["style"]:
+                        del el["style"]
+            else:
+                el.decompose()
 
     result = str(soup.prettify(formatter="html"))
     result = re.sub(r'"sticky_offset(_mobile)?":\d+', r'"sticky_offset\1":0', result)
