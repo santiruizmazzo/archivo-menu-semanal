@@ -63,9 +63,38 @@ def main():
         raw,
         flags=re.DOTALL,
     )
+
+    # Remove all <script> and <noscript> tags (none affect visual rendering)
+    raw = re.sub(r'<script[^>]*>.*?</script>', "", raw, flags=re.DOTALL)
+    raw = re.sub(r'<noscript[^>]*>.*?</noscript>', "", raw, flags=re.DOTALL)
+
     raw = re.sub(r"\n{3,}", "\n\n", raw)
 
     soup = BeautifulSoup(raw, "lxml")
+
+    # Remove non-essential <meta> tags (keep charset, viewport, description, robots, OG/Twitter)
+    for el in list(soup.find_all("meta")):
+        if el.get("charset"):
+            continue
+        name = (el.get("name") or el.get("property") or "").lower()
+        if name in ("viewport", "description", "robots"):
+            continue
+        if name.startswith(("og:", "twitter:")):
+            continue
+        if (el.get("http-equiv") or "").lower() == "content-type":
+            continue
+        el.decompose()
+
+    # Remove non-essential <link> tags (keep stylesheets, fonts, icons, preconnect, etc.)
+    for el in list(soup.find_all("link")):
+        rels = el.get("rel") or []
+        rel = rels[0] if rels else ""
+        href = el.get("href") or ""
+        if rel in ("profile", "alternate", "EditURI", "shortlink", "pingback", "https://api.w.org/"):
+            el.decompose()
+            continue
+        if "api.w.org" in href:
+            el.decompose()
 
     for tag_name in ["header", "footer"]:
         for el in soup.find_all(tag_name):
