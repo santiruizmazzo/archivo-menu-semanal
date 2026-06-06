@@ -14,6 +14,7 @@
    - Elimina `<header>` y `<footer>` del sitio.
    - Elimina todas las etiquetas `<script>` y `<noscript>` (ninguna afecta el renderizado visual).
    - Elimina los comentarios HTML del sitio excepto `<!-- saved from url=... -->`.
+   - Elimina los comentarios CSS `/* ... */` dentro de los estilos inlinados.
    - Elimina meta tags no esenciales (conserva charset, viewport, description, robots, OG y Twitter cards).
    - Elimina link tags no esenciales (conserva stylesheets, fonts, icons, preconnect, etc.).
    - Elimina la sección "Unite a nuestra comunidad de WhatsApp" y el texto de cierre ("Espero haberte salvado...", etc.).

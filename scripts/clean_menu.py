@@ -68,6 +68,9 @@ def main():
     raw = re.sub(r'<script[^>]*>.*?</script>', "", raw, flags=re.DOTALL)
     raw = re.sub(r'<noscript[^>]*>.*?</noscript>', "", raw, flags=re.DOTALL)
 
+    # Strip CSS comments /* ... */ inside inlined styles (no visual effect)
+    raw = re.sub(r'/\*.*?\*/', "", raw, flags=re.DOTALL)
+
     raw = re.sub(r"\n{3,}", "\n\n", raw)
 
     soup = BeautifulSoup(raw, "lxml")
