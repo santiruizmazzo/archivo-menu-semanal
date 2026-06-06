@@ -9,8 +9,8 @@ FAREWELL_PATTERNS = [
     "Espero haberte salvado",
     "Si llegaste hasta aca sin caer",
     "Si llegaste hasta acá sin caer",
-    "Bueno, mision cumplida",
-    "Bueno, misión cumplida",
+    "Bueno, mision",
+    "Bueno, misión",
     "Nos reencontramos en la proxima",
     "Nos reencontramos en la próxima",
     "Nos vemos en el proximo menu",
@@ -64,6 +64,22 @@ def main():
     remove_sections_by_text(soup, WHATSAPP_PATTERNS)
     remove_sections_by_text(soup, FAREWELL_PATTERNS)
 
+    # Remove floating WhatsApp button and the 3 popup divs that follow it
+    fw = soup.find("div", id="float-whatsapp")
+    if fw:
+        to_remove = [fw]
+        sibling = fw.next_sibling
+        while sibling and len(to_remove) < 4:  # fw + 3 next divs
+            if isinstance(sibling, Tag) and sibling.name == "div":
+                to_remove.append(sibling)
+            sibling = sibling.next_sibling
+        for el in to_remove:
+            el.decompose()
+
+    # Remove stray popup divs outside the main document (caused by embedded HTML snippets)
+    for popup in soup.find_all("div", attrs={"data-elementor-type": "popup"}):
+        popup.decompose()
+
     # Fix sticky nav bars: remove JS-added classes/inline styles, remove spacer duplicates
     STICKY_DATA_IDS = {"740ebe60"}
     for data_id in STICKY_DATA_IDS:
@@ -88,6 +104,12 @@ def main():
 
     result = str(soup.prettify(formatter="html"))
     result = re.sub(r'"sticky_offset(_mobile)?":\d+', r'"sticky_offset\1":0', result)
+    # Strip leaked content after premature </html> (from embedded HTML snippets inside popups)
+    first_html_close = result.find("</html>")
+    if first_html_close != -1 and first_html_close + 7 < len(result):
+        trailing = result[first_html_close + 7:].strip()
+        if trailing:
+            result = result[:first_html_close + 7]
     path.write_text(result, "utf-8")
     print(f"✅ Limpiado: {path}")
 
