@@ -15,6 +15,7 @@
    - Elimina la sección "Unite a nuestra comunidad de WhatsApp" y el texto de cierre ("Espero haberte salvado...", etc.).
    - Elimina el `div#float-whatsapp` (botón flotante de WhatsApp) y los 3 `div`s siguientes (popups de Elementor).
    - Elimina el `div[data-id="739cf578"]` que contiene el ícono SVG y el link "Volver" a la página principal.
+   - Elimina los comentarios HTML del sitio excepto `<!-- saved from url=... -->`.
    - Elimina cualquier `div[data-elementor-type="popup"]` remanente (pueden quedar sueltos por HTML embebido dentro de los popups).
    - Trunca el contenido que queda después del primer `</html>` (fragmentos que el parser deja fuera del documento por HTML embebido mal formado dentro de los popups).
    - Setea todos los `sticky_offset` a 0 (la nav bar de días queda pegada al tope).
