@@ -55,6 +55,16 @@ def main():
         sys.exit(1)
 
     raw = path.read_text("utf-8")
+
+    # Strip HTML comments, preserve only <!-- saved from url=... -->
+    raw = re.sub(
+        r'<!--(.*?)-->',
+        lambda m: m.group(0) if m.group(1).strip().startswith("saved from url=") else "",
+        raw,
+        flags=re.DOTALL,
+    )
+    raw = re.sub(r"\n{3,}", "\n\n", raw)
+
     soup = BeautifulSoup(raw, "lxml")
 
     for tag_name in ["header", "footer"]:
