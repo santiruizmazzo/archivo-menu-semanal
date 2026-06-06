@@ -1,4 +1,4 @@
-# Mis Menús Semanales
+# Archivo Menú Semanal
 
 Archivo personal de menús semanales descargados de mi suscripción.
 
@@ -33,22 +33,3 @@ Es el mismo nombre que descargás de la app, no hace falta renombrar nada.
 3. `git add . && git commit -m "menú semana X" && git push`
 4. La GitHub Action regenera el `index.html` y despliega automáticamente ✓
 
-## Setup inicial (una sola vez)
-
-### 1. Crear el repositorio en GitHub
-Creá un repo público (necesario para GitHub Pages gratis).
-
-### 2. Habilitar GitHub Pages
-En el repo → **Settings → Pages → Source → Deploy from branch → `gh-pages`**
-
-### 3. Correr el generador localmente (opcional)
-```bash
-node generate-index.js
-```
-
-## URL del sitio
-
-Una vez configurado, el sitio queda disponible en:
-```
-https://TU_USUARIO.github.io/NOMBRE_DEL_REPO/
-```
