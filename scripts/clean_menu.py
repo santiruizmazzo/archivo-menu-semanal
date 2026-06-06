@@ -64,6 +64,10 @@ def main():
     remove_sections_by_text(soup, WHATSAPP_PATTERNS)
     remove_sections_by_text(soup, FAREWELL_PATTERNS)
 
+    # Remove the "Volver" link box (div with SVG icon + "Volver" text link)
+    for el in soup.find_all("div", attrs={"data-id": "739cf578"}):
+        el.decompose()
+
     # Remove floating WhatsApp button and the 3 popup divs that follow it
     fw = soup.find("div", id="float-whatsapp")
     if fw:
