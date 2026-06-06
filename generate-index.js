@@ -65,9 +65,11 @@ const menuCards = files
     const isLatest = i === 0;
     return `
       <a href="menus/${file}" class="card${isLatest ? " card--latest" : ""}">
-        <div class="card-header">
-          ${isLatest ? '<span class="badge">Último</span>' : ""}
-        </div>
+        ${isLatest ? `
+          <div class="card-header">
+            <span class="badge">Último</span>
+          </div>` : ""}
+        
         <div class="card-title">${title}</div>
         <div class="card-arrow">→</div>
       </a>`;
