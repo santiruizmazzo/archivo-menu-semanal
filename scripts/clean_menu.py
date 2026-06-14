@@ -11,6 +11,8 @@ FAREWELL_PATTERNS = [
     "Si llegaste hasta acá sin caer",
     "Bueno, mision",
     "Bueno, misión",
+    "Bueno, ya estás cubierta",
+    "Bueno, ya estas cubierta",
     "Nos reencontramos en la proxima",
     "Nos reencontramos en la próxima",
     "Nos vemos en el proximo menu",
