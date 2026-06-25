@@ -17,6 +17,7 @@ FAREWELL_PATTERNS = [
     "Nos reencontramos en la próxima",
     "Nos vemos en el proximo menu",
     "Nos vemos en el próximo menú",
+    "La semana que viene",
 ]
 
 WHATSAPP_PATTERNS = [
