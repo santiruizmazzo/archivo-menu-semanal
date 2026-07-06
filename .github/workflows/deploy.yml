@@ -14,6 +14,9 @@ permissions:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       - name: Checkout del repositorio
@@ -35,9 +38,15 @@ jobs:
           git diff --staged --quiet || git commit -m "chore: regenerar index.html [skip ci]"
           git push
 
-      - name: Deploy a GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./
-          exclude_assets: ".github,generate-index.js,README.md"
+          path: ./
+          exclude: |
+            .github
+            generate-index.js
+            README.md
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
